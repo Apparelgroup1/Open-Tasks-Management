@@ -1,0 +1,372 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tasks Management System</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600&display=swap');
+    :root {
+      --primary-color: #4f46e5;
+      --secondary-color: #6366f1;
+      --background-color: linear-gradient(180deg, #e0e7ff 0%, #f3f0ff 100%);
+      --card-background: #ffffff;
+      --text-color: #111827;
+      --text-muted: #6b7280;
+      --border-radius: 12px;
+      --transition-speed: 0.3s;
+      --table-header-bg: #eef2ff;
+      --table-border-color: #e0e7ff;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--background-color);
+      margin: 0;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container {
+      background: var(--card-background);
+      max-width: 960px;
+      width: 100%;
+      border-radius: var(--border-radius);
+      box-shadow: 0 8px 24px rgb(0 0 0 / 0.1);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    h1 {
+      font-weight: 700;
+      font-size: 2rem;
+      text-align: center;
+      color: var(--primary-color);
+      margin-bottom: 0;
+    }
+    form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem 1.5rem;
+      align-items: end;
+    }
+    label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--primary-color);
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+    input[type="text"],
+    input[type="date"],
+    select,
+    textarea {
+      padding: 0.5rem 0.75rem;
+      border: 1.5px solid #d1d5db;
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+      resize: vertical;
+      width: 100%;
+      transition: border-color var(--transition-speed);
+    }
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 5px var(--secondary-color);
+    }
+    textarea {
+      min-height: 50px;
+      max-height: 120px;
+    }
+    button {
+      background: var(--primary-color);
+      color: #fff;
+      border: none;
+      padding: 0.9rem 1rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: background-color var(--transition-speed), transform var(--transition-speed);
+      user-select: none;
+      grid-column: 1 / -1;
+      width: 140px;
+      justify-self: center;
+    }
+    button:hover,
+    button:focus {
+      background: var(--secondary-color);
+      transform: scale(1.05);
+      outline: none;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      box-shadow: 0 2px 12px rgb(0 0 0 / 0.05);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      font-size: 0.95rem;
+      user-select: none;
+    }
+    thead {
+      background: var(--table-header-bg);
+      color: var(--primary-color);
+      font-weight: 700;
+    }
+    th, td {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--table-border-color);
+      vertical-align: middle;
+    }
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+    tbody tr:hover {
+      background: #f0f5ff;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+    .action-buttons button {
+      background: transparent;
+      border: 1.5px solid var(--primary-color);
+      border-radius: var(--border-radius);
+      padding: 0.3rem 0.6rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all var(--transition-speed);
+      color: var(--primary-color);
+      user-select: none;
+    }
+    .action-buttons button:hover,
+    .action-buttons button:focus {
+      background: var(--primary-color);
+      color: white;
+      outline: none;
+    }
+    @media (max-width: 720px) {
+      form {
+        grid-template-columns: 1fr;
+      }
+      button {
+        width: 100%;
+        grid-column: 1;
+      }
+      th, td {
+        padding: 0.5rem 0.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container" role="main" aria-label="Tasks Management System">
+    <h1>Tasks Management System</h1>
+    <form id="task-form" aria-label="Add new task">
+      <div>
+        <label for="task-name">Task Name *</label>
+        <input type="text" id="task-name" required autocomplete="off" />
+      </div>
+      <div>
+        <label for="task-remarks">Remarks</label>
+        <textarea id="task-remarks" rows="2" placeholder="Additional remarks"></textarea>
+      </div>
+      <div>
+        <label for="task-status">Status *</label>
+        <select id="task-status" required>
+          <option value="Open">Open</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Closed">Closed</option>
+        </select>
+      </div>
+      <div>
+        <label for="task-open-date">Open Date *</label>
+        <input type="date" id="task-open-date" required />
+      </div>
+      <div>
+        <label for="task-closed-date">Closed Date</label>
+        <input type="date" id="task-closed-date" disabled />
+      </div>
+      <div>
+        <label for="task-given-by">Task Given By</label>
+        <input type="text" id="task-given-by" autocomplete="off" />
+      </div>
+      <div>
+        <label for="task-responsibility">Responsibility</label>
+        <input type="text" id="task-responsibility" autocomplete="off" />
+      </div>
+      <div>
+        <label for="task-priority">Priority *</label>
+        <select id="task-priority" required>
+          <option value="High">High</option>
+          <option value="Medium" selected>Medium</option>
+          <option value="Low">Low</option>
+        </select>
+      </div>
+      <div>
+        <button type="submit" id="add-task-button">Add Task</button>
+      </div>
+    </form>
+    <table aria-label="Tasks List" id="tasks-table">
+      <thead>
+        <tr>
+          <th>Sl No.</th>
+          <th>Task Name</th>
+          <th>Remarks</th>
+          <th>Status</th>
+          <th>Open Date</th>
+          <th>Closed Date</th>
+          <th>Task Given By</th>
+          <th>Responsibility</th>
+          <th>Priority</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="tasks-tbody">
+        <!-- Tasks will be inserted here -->
+      </tbody>
+    </table>
+  </main>
+
+  <script>
+    (function() {
+      const taskForm = document.getElementById('task-form');
+      const tasksTableBody = document.getElementById('tasks-tbody');
+
+      const inputName = document.getElementById('task-name');
+      const inputRemarks = document.getElementById('task-remarks');
+      const inputStatus = document.getElementById('task-status');
+      const inputOpenDate = document.getElementById('task-open-date');
+      const inputClosedDate = document.getElementById('task-closed-date');
+      const inputGivenBy = document.getElementById('task-given-by');
+      const inputResponsibility = document.getElementById('task-responsibility');
+      const inputPriority = document.getElementById('task-priority');
+
+      let tasks = [];
+
+      function saveTasks() {
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+      }
+
+      function loadTasks() {
+        const saved = localStorage.getItem('tasks');
+        if(saved) {
+          tasks = JSON.parse(saved);
+        } else {
+          tasks = [];
+        }
+      }
+
+      function formatDate(dateStr) {
+        if(!dateStr) return '';
+        const d = new Date(dateStr);
+        if(isNaN(d)) return '';
+        return d.toLocaleDateString();
+      }
+
+      function renderTasks() {
+        tasksTableBody.innerHTML = '';
+        if(tasks.length === 0) {
+          const tr = document.createElement('tr');
+          const td = document.createElement('td');
+          td.colSpan = 10;
+          td.style.textAlign = 'center';
+          td.textContent = 'No tasks found. Please add tasks.';
+          tr.appendChild(td);
+          tasksTableBody.appendChild(tr);
+          return;
+        }
+        tasks.forEach((task, index) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${task.name}</td>
+            <td>${task.remarks||''}</td>
+            <td>${task.status}</td>
+            <td>${formatDate(task.openDate)}</td>
+            <td>${formatDate(task.closedDate)}</td>
+            <td>${task.givenBy||''}</td>
+            <td>${task.responsibility||''}</td>
+            <td>${task.priority}</td>
+            <td>
+              <button type="button" data-index="${index}" class="delete-btn">Delete</button>
+            </td>
+          `;
+          tasksTableBody.appendChild(tr);
+        });
+        // Attach delete event listeners
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+          btn.addEventListener('click', e => {
+            const idx = parseInt(e.target.getAttribute('data-index'));
+            if(confirm('Are you sure to delete this task?')) {
+              tasks.splice(idx,1);
+              saveTasks();
+              renderTasks();
+            }
+          });
+        });
+      }
+
+      taskForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const newTask = {
+          name: inputName.value.trim(),
+          remarks: inputRemarks.value.trim(),
+          status: inputStatus.value,
+          openDate: inputOpenDate.value,
+          closedDate: inputClosedDate.value,
+          givenBy: inputGivenBy.value.trim(),
+          responsibility: inputResponsibility.value.trim(),
+          priority: inputPriority.value
+        };
+
+        // If status is Closed and closedDate is empty, set today as closedDate
+        if(newTask.status === 'Closed' && !newTask.closedDate) {
+          newTask.closedDate = new Date().toISOString().slice(0,10);
+        }
+
+        // If status is other than closed, clear closedDate
+        if(newTask.status !== 'Closed') {
+          newTask.closedDate = '';
+        }
+
+        tasks.unshift(newTask);
+        saveTasks();
+        renderTasks();
+        e.target.reset();
+        inputClosedDate.disabled = true;
+        inputPriority.value = 'Medium';
+      });
+
+      // Enable/disable Closed Date input depending on status
+      inputStatus.addEventListener('change', () => {
+        if(inputStatus.value === 'Closed') {
+          inputClosedDate.disabled = false;
+          if(!inputClosedDate.value) {
+            inputClosedDate.value = new Date().toISOString().slice(0,10);
+          }
+        } else {
+          inputClosedDate.disabled = true;
+          inputClosedDate.value = '';
+        }
+      });
+
+      // On load
+      loadTasks();
+      renderTasks();
+      inputClosedDate.disabled = true;
+    })();
+  </script>
+</body>
+</html>
